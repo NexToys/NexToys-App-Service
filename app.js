@@ -2,22 +2,28 @@
 const express = require('express');
 const path = require('path');
 const cookieParser = require('cookie-parser');
-const logger = require('morgan');
 
 // Include Routers
 const indexRouter = require('./routes/index');
 const userRouter = require('./routes/user');
+const toyRouter = require('./routes/toy');
 
 const app = express();
 
-app.use(logger('dev'));
+//db
+const db = require('./helper/db')();
+
 app.use(express.json());
-app.use(express.urlencoded({ extended: false }));
+app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
 // Use Routers
 app.use('/', indexRouter);
 app.use('/user', userRouter);
+app.use('/toy', toyRouter);
 
+app.listen('3000',()=>{
+    console.log('localhost:3000');
+});
 module.exports = app;
