@@ -27,10 +27,10 @@ app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
 // Use Routers
-//app.use('/',verifyToken);
 app.use('/', indexRouter);
-app.use('/user', userRouter);
-app.use('/toy', toyRouter);
+app.use('/api',verifyToken);
+app.use('/api/user', userRouter);
+app.use('/api/toy', toyRouter);
 
 app.listen('3000',()=>{
     console.log('localhost:3000');
