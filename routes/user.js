@@ -2,6 +2,7 @@ const express = require('express');
 const mongoose = require('mongoose');
 const router = express.Router();
 const bcrypt = require('bcryptjs');
+const jwt = require('jsonwebtoken');
 
 //model
 const User = require('../model/user');
@@ -29,18 +30,39 @@ router.get('/', (req, res, next) => {
 
 //post
 router.post('/signin', (req, res, next) => {
-  var {username,password} = req.body;
-  const promise = User.findOne(username.includes('@') ? {email: username} : {username: username});
+  var {loginname,password} = req.body;
+  const promise = User.findOne(loginname.includes('@') ? {email: loginname} : {username: loginname});
   
-  promise.then((data) => {
-    bcrypt.compare(password,data.password).then((data) => {
-      res.json(data);
-    }).catch((err) => {
-      res.json(err);
+  if(!promise)
+  {
+    res.json({
+      status: false,
+      message: 'Authentication failed. Wrong Username'
+    })
+  }else {
+    promise.then((data) => {
+      bcrypt.compare(password,data.password).then((data) => {
+        if(!data)
+        {
+          res.json({
+            status: false,
+            message: 'Authentication failed. Wrong Password'
+          });
+        }else{
+          const payload = {
+            loginname
+          }
+          const token = jwt.sign(payload, req.app.get('api_secret_key'),{
+            expiresIn: 720
+          });
+          res.json({
+            status: data,
+            token
+          });
+        }      
+      });
     });
-  }).catch((err) => {
-    res.json(err);
-  });
+  }  
 });
 
 router.post('/signup', (req, res, next) => {
@@ -53,24 +75,16 @@ router.post('/signup', (req, res, next) => {
       email: req.body.email,
       password: hash,
       bio: req.body.bio,
+      pp_url: req.body.pp_url,
+      rating: req.body.rating,
       createdAt: req.body.createdAt
     });
     const promise = user.save();
-    upload.single('profile_pic');
     promise.then((data) => {
       res.json(data);
     }).catch((err) => { 
       res.json(err);
     });
-  });
-});
-
-router.post('/uploadpic', (req, res ,next) => {
-  const user = User.findById(req.body._id);
-  user.profile_pic.data = req.body.profile_pic;
-  user.profile_pic.contentType = 'image/jpg';
-  user.save().catch((err) => {
-    res.json(err);
   });
 });
 
@@ -87,7 +101,7 @@ router.put('/update', (req, res, next) => {
 
 //delete
 router.delete('/delete', (req, res, next) => {
-  const promise = User.findByIdAndDelete(req.body._id);
+  const promise = User.findByIdAndRemove(req.body._id);
 
   promise.then((data)=>{
     res.json(true);

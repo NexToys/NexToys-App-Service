@@ -18,11 +18,13 @@ const toySchema = new Schema({
         type: String,
         required: true
     },
-    image: {
-        img: { data: Buffer, contentType: String}
+    imageurl: {
+        type: String,
+        required: true
     },
     owner_id:{
         type: Schema.Types.ObjectId,
+        ref: 'User',
         required: true
     },
     createdAt: {

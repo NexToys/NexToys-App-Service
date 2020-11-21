@@ -26,8 +26,13 @@ const userSchema = new Schema({
     bio: {
         type: String
     },
-    profile_pic: {
-        img: { data: Buffer, contentType: String}
+    pp_url: {
+        type: String,
+        required: false
+    },
+    rating:{
+        type: Number,
+        default: 0.0
     },
     createdAt: {
         type: Date,
