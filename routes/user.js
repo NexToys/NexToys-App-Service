@@ -8,7 +8,7 @@ const jwt = require('jsonwebtoken');
 const User = require('../model/user');
 
 //get
-router.get('/', (req, res, next) => {
+router.get('/', async(req, res, next) => {
   const promise = User.find({});
 
   promise.then((data) => {
@@ -18,7 +18,7 @@ router.get('/', (req, res, next) => {
   });
 });
 
-router.get('/', (req, res, next) => {
+router.get('/', async(req, res, next) => {
   const promise = User.findById(req.body._id);
 
   promise.then((data) => {
@@ -29,9 +29,9 @@ router.get('/', (req, res, next) => {
 });
 
 //post
-router.post('/signin', (req, res, next) => {
+router.post('/signin', async(req, res, next) => {
   var {loginname,password} = req.body;
-  const promise = User.findOne(loginname.includes('@') ? {email: loginname} : {username: loginname});
+  const promise = await User.findOne(loginname.includes('@') ? {email: loginname} : {username: loginname});
   
   if(!promise)
   {
@@ -55,6 +55,7 @@ router.post('/signin', (req, res, next) => {
           const token = jwt.sign(payload, req.app.get('api_secret_key'),{
             expiresIn: 720
           });
+          User.findByIdAndUpdate(promise._id,{token:token})
           res.json({
             status: data,
             token
@@ -65,8 +66,8 @@ router.post('/signin', (req, res, next) => {
   }  
 });
 
-router.post('/signup', (req, res, next) => {
-  bcrypt.hash(req.body.password, 10).then((hash) => {
+router.post('/signup', async(req, res, next) => {
+  await bcrypt.hash(req.body.password, 10).then((hash) => {
     const user = new User({
       _id: new mongoose.Types.ObjectId(),
       name: req.body.name,
@@ -89,8 +90,8 @@ router.post('/signup', (req, res, next) => {
 });
 
 //put
-router.put('/update', (req, res, next) => {
-  const promise = User.findByIdAndUpdate(req.body._id,req.body,{new: true});
+router.put('/update', async(req, res, next) => {
+  const promise = await User.findByIdAndUpdate(req.body._id,req.body,{new: true});
 
   promise.then((data)=>{
     res.json(data);
@@ -100,8 +101,8 @@ router.put('/update', (req, res, next) => {
 });
 
 //delete
-router.delete('/delete', (req, res, next) => {
-  const promise = User.findByIdAndRemove(req.body._id);
+router.delete('/delete', async(req, res, next) => {
+  const promise = await User.findByIdAndRemove(req.body._id);
 
   promise.then((data)=>{
     res.json(true);
