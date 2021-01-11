@@ -9,7 +9,7 @@ const User = require('../model/user');
 const isVerified = require('../helper/verify-token');
 
 //get
-router.get('/',isVerified, async(req, res, next) => {
+router.get('/',isVerified, (req, res) => {
   const promise = User.find({});
 
   promise.then((data) => {
@@ -19,7 +19,7 @@ router.get('/',isVerified, async(req, res, next) => {
   });
 });
 
-router.get('/',isVerified, async(req, res, next) => {
+router.get('/',isVerified, async(req, res) => {
   const promise = User.findById(req.body._id);
 
   promise.then((data) => {
@@ -32,7 +32,7 @@ router.get('/',isVerified, async(req, res, next) => {
 //post
 router.post('/signin', async(req, res) => {
   var {loginname,password} = req.body;
-  const promise = await User.findOne(loginname.includes('@') ? {email: loginname} : {username: loginname});
+  const promise = User.findOne(loginname.includes('@') ? {email: loginname} : {username: loginname});
   
   if(!promise)
   {
@@ -59,7 +59,7 @@ router.post('/signin', async(req, res) => {
           User.findByIdAndUpdate(promise._id,{token:token})
           res.json({
             status: data,
-            token
+            token: token
           });
         }      
       });
@@ -92,7 +92,7 @@ router.post('/signup', async(req, res) => {
 
 //put
 router.put('/update',isVerified, async(req, res) => {
-  const promise = await User.findByIdAndUpdate(req.body._id,req.body,{new: true});
+  const promise = User.findByIdAndUpdate(req.body._id,req.body,{new: true});
 
   promise.then((data)=>{
     res.json(data);
@@ -103,7 +103,7 @@ router.put('/update',isVerified, async(req, res) => {
 
 //delete
 router.delete('/delete',isVerified, async(req, res) => {
-  const promise = await User.findByIdAndRemove(req.body._id);
+  const promise = User.findByIdAndRemove(req.body._id);
 
   promise.then(()=>{
     res.json(true);

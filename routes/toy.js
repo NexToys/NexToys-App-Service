@@ -6,7 +6,7 @@ const router = express.Router();
 const Toy = require('../model/toy');
 
 //get
-router.get('/', function(req, res, next) {
+router.get('/', async(req, res) => {
     Toy.aggregate(
     ).lookup({
         from: 'users',
@@ -20,7 +20,7 @@ router.get('/', function(req, res, next) {
     });
 });
 
-router.get('/byownerid', (req,res,next) => {
+router.get('/byownerid', async(req,res) => {
         Toy.aggregate(
         ).match(
             {
@@ -38,7 +38,7 @@ router.get('/byownerid', (req,res,next) => {
         });
 });
 
-router.get('/bytoyid', (req,res,next) => {
+router.get('/bytoyid', async(req,res) => {
     Toy.aggregate(
         ).match(
             {
@@ -57,7 +57,7 @@ router.get('/bytoyid', (req,res,next) => {
 });
 
 //post
-router.post('/register',(req,res,next) => {
+router.post('/register',async(req,res) => {
     const toy = new Toy({
         _id: new mongoose.Types.ObjectId(),
         isActive: req.body.isActive,
@@ -78,7 +78,7 @@ router.post('/register',(req,res,next) => {
 });
 
 //put
-router.put('/update', (req,res,next) =>{
+router.put('/update', async(req,res) =>{
     const promise = Toy.findByIdAndUpdate(req.body._id,req.body,{new: true});
 
     promise.then((data) => {
@@ -89,10 +89,10 @@ router.put('/update', (req,res,next) =>{
 });
 
 //delete
-router.delete('/delete', (req,body,next) => {
+router.delete('/delete', async(req,res) => {
     const promise = Toy.findByIdAndRemove(req.body._id);
 
-    promise.then((data)=>{
+    promise.then(()=>{
         res.json(true);
     }).catch((err) => {
         res.json(err);
