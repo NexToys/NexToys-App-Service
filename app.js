@@ -28,7 +28,6 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 // Use Routers
 app.use('/', indexRouter);
-app.use('/api',verifyToken);
 app.use('/api/user', userRouter);
 app.use('/api/toy', toyRouter);
 

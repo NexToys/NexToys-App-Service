@@ -1,6 +1,6 @@
 const jwt = require('jsonwebtoken');
 
-module.exports = (req,res,next) => {
+var isVerified =  (req,res,next) => {
     const token = req.headers['x-access-token'] || req.body.token || req.query.token;
 
     if(!token){
@@ -21,4 +21,6 @@ module.exports = (req,res,next) => {
             }
         });
     }
-}
+};
+
+module.exports = isVerified;
