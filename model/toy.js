@@ -22,7 +22,7 @@ const toySchema = new Schema({
         type: String,
         required: true
     },
-    owner_id:{
+    ownerId:{
         type: Schema.Types.ObjectId,
         ref: 'User',
         required: true
