@@ -1,4 +1,5 @@
 const mongoose = require('mongoose');
+const joi = require('@hapi/joi');
 const Schema = mongoose.Schema;
 
 const toySchema = new Schema({
@@ -18,8 +19,8 @@ const toySchema = new Schema({
         type: String,
         required: true
     },
-    imageurl: {
-        type: String,
+    imageids: {
+        type: Array,
         required: true
     },
     ownerId:{
@@ -32,5 +33,18 @@ const toySchema = new Schema({
         default: Date.now
     }
 });
+
+/* toySchema.statics.signUpValidation = function(object){
+    const schema = joi.object({
+        isActive: joi.bool().required().default(false),
+        name: joi.string().min(4).max(45).required(),
+        description: joi.string().max(200),
+        type: joi.string().required(),
+        imageids: joi.array().string().required(),
+        ownerId: joi.ObjectId().ref('User').required(),
+        createdAt: joi.date().default(Date.now)
+    });
+    return schema.validate(object);
+} */
 
 module.exports = mongoose.model('toy',toySchema);

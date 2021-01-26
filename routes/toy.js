@@ -1,9 +1,12 @@
 const express = require('express');
 const mongoose = require('mongoose');
 const router = express.Router();
+const imageFilter = require('../helper/imageFilter');
+const uploadTPic = imageFilter.uploadTPic;
 
 //model
 const Toy = require('../model/toy');
+const Image = require('../model/image');
 
 //get
 router.get('/', async(req, res) => {
@@ -62,14 +65,36 @@ router.get('/bytoyid', async(req,res) => {
 });
 
 //post
-router.post('/register',async(req,res) => {
+router.post('/register',uploadTPic.array('images'), async(req,res) => {
+    var idArray = new Array();
+    const files = req.files;
+    files.forEach(image => {
+        const image0 = new Image({
+            _id: new mongoose.Types.ObjectId(),
+            height: req.body.height,
+            width: req.body.width,
+            fileSize: image.size,
+            path: image.destination + "/" + image.filename
+        });
+        
+        const imagepromise = image0.save();
+
+        idArray.push(image0._id);
+    
+        imagepromise.then(() => {
+            console.log('resim yüklendi');
+        }).catch((err) => {
+            console.log(err);
+        });
+    });
+    
     const toy = new Toy({
         _id: new mongoose.Types.ObjectId(),
         isActive: req.body.isActive,
         name: req.body.name,
         description: req.body.description,
         type:req.body.type,
-        imageurl: req.body.imageurl,
+        imageids: idArray,
         ownerId: req.body.ownerId,
         createdAt: req.body.createdAt
     });
@@ -100,6 +125,16 @@ router.delete('/delete', async(req,res) => {
     const promise = Toy.findByIdAndRemove(req.body._id);
 
     promise.then(()=>{
+        res.json(true);
+    }).catch((err) => {
+        res.json(err);
+    });
+});
+
+router.delete('/deletepic', async(req,res) => {
+    const promise = Image.findByIdAndRemove(req.body._id);
+
+    promise.then(() => {
         res.json(true);
     }).catch((err) => {
         res.json(err);

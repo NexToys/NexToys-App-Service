@@ -3,53 +3,50 @@ const joi = require('@hapi/joi');
 const Schema = mongoose.Schema;
 
 const userSchema = new Schema({
-    name: {
-        type: String,
-    },
-    surname: {
-        type: String,
+    name: {/* 
+        type: String, */
     },
     username: {
         type: String,
         unique: true
     },
-    email: {
-        type: String,
+    email: {/* 
+        type: String, */
     },
-    password: {
-        type: String,
+    password: {/* 
+        type: String, */
     },
-    bio: {
-        type: String
+    bio: {/* 
+        type: String */
     },
-    pp_url: {
-        type: String,
+    imageids: {/* 
+        type: String, */
     },
-    rating:{
+    rating:{/* 
         type: Number,
-        default: 0.0
+        default: 0.0 */
     },
-    createdAt: {
+    createdAt: {/* 
         type: Date,
-        default: Date.now
+        default: Date.now */
     },
-    token: {
-        type: String
+    token: {/* 
+        type: String */
     }
 });
-
+/* 
 userSchema.statics.signUpValidation = function(object){
     const schema = joi.object({
-        name: joi.string().min(4).max(15).required(),
-        surname: joi.string().min(4).max(15).required(),
+        name: joi.string().min(4).max(30).required(),
         username: joi.string().min(4).max(15).required(),
         password: joi.string().min(8).required(),
         email: joi.string().email().required().lowercase(),
-        bio : joi.string(),
+        imageurl: joi.string().default('default için resim urlsi girilecek'),
+        bio : joi.string().max(200),
         rating: joi.number().default(0.0),
         createdAt: joi.date().default(Date.now)
     });
     return schema.validate(object);
-}
+} */
 
 module.exports = mongoose.model('user',userSchema);

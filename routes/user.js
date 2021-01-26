@@ -72,15 +72,15 @@ router.post('/signup', async(req, res) => {
     const user = new User({
       _id: new mongoose.Types.ObjectId(),
       name: req.body.name,
-      surname: req.body.surname,
       username: req.body.username,
       email: req.body.email,
       password: hash,
       bio: req.body.bio,
-      pp_url: req.body.pp_url,
+      imageids: req.body.pp_url,
       rating: req.body.rating,
       createdAt: req.body.createdAt
     });
+    
     const promise = user.save();
     promise.then((data) => {
       res.json(data);

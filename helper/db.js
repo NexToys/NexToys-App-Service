@@ -2,7 +2,7 @@ const mongoose = require('mongoose');
 
 
 module.exports = () => {
-    mongoose.connect('mongodb+srv://admin:<password>@nextoys-db.l5gsm.mongodb.net/<dbname>?retryWrites=true&w=majority',{
+    mongoose.connect('mongodb+srv://admin:admin1234@nextoys-db.l5gsm.mongodb.net/nextoys-db?retryWrites=true&w=majority',{
         useNewUrlParser:true,
         useUnifiedTopology:true
     });
