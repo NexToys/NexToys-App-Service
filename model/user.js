@@ -3,35 +3,37 @@ const joi = require('@hapi/joi');
 const Schema = mongoose.Schema;
 
 const userSchema = new Schema({
-    name: {/* 
-        type: String, */
+    name: {
+        type: String,
     },
     username: {
         type: String,
         unique: true
     },
-    email: {/* 
-        type: String, */
+    email: {
+        type: String,
     },
-    password: {/* 
-        type: String, */
+    password: {
+        type: String,
     },
-    bio: {/* 
-        type: String */
+    bio: {
+        type: String,
+        default: ""
     },
-    imageids: {/* 
-        type: String, */
+    imageurl: {
+        type: String,
+        default: ""
     },
-    rating:{/* 
+    rating:{
         type: Number,
-        default: 0.0 */
+        default: 0.0
     },
-    createdAt: {/* 
+    createdAt: {
         type: Date,
-        default: Date.now */
+        default: Date.now
     },
-    token: {/* 
-        type: String */
+    token: {
+        type: String
     }
 });
 /* 

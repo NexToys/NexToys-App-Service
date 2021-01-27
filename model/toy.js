@@ -19,8 +19,8 @@ const toySchema = new Schema({
         type: String,
         required: true
     },
-    imageids: {
-        type: Array,
+    imageurl: {
+        type: String,
         required: true
     },
     ownerId:{

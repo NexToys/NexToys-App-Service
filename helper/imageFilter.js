@@ -6,7 +6,7 @@ const month = `${today.getMonth() + 1}`.padStart(2, "0");
 
 const toystorage = multer.diskStorage({
     destination: (req,file,cb) => {
-        cb(null,'./uploads');
+        cb(null,'./public/uploads');
     },
     filename: (req,file,cb) => {
         console.log(file);
