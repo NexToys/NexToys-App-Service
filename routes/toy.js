@@ -61,8 +61,12 @@ router.get('/bytoyid', async(req,res) => {
         });
 });
 
+<<<<<<< Updated upstream
 //post
 router.post('/register',async(req,res) => {
+=======
+router.post('/register', async(req,res) => {
+>>>>>>> Stashed changes
     const toy = new Toy({
         _id: new mongoose.Types.ObjectId(),
         isActive: req.body.isActive,

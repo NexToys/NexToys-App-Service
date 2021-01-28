@@ -19,6 +19,10 @@ app.set('api_secret_key',config.api_secret_key);
 
 //helper
 const verifyToken= require('./helper/verify-token');
+<<<<<<< Updated upstream
+=======
+const db = require('./helper/db')();
+>>>>>>> Stashed changes
 
 //
 app.use(express.json());
