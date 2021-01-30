@@ -2,7 +2,6 @@
 const express = require('express');
 const path = require('path');
 const cookieParser = require('cookie-parser');
-const multer = require('multer');
 
 // Include Routers
 const indexRouter = require('./routes/index');
@@ -18,7 +17,6 @@ app.set('api_secret_key',config.api_secret_key);
 //helper
 const verifyToken= require('./helper/verify-token');
 const db = require('./helper/db')();
-const imageFilter = require('./helper/imageFilter');
 
 //
 app.use(express.json());

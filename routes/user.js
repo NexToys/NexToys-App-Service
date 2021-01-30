@@ -9,20 +9,16 @@ const User = require('../model/user');
 const isVerified = require('../helper/verify-token');
 
 //get
-router.get('/',/* isVerified, */ (req, res) => {
-  const promise = User.find();
-
-  promise.then((data) => {
+router.get('/', async (req, res) => {
+  await User.find({}).then((data) => {
     res.json(data);
   }).catch((err) => { 
     res.json(err);
   });
 });
 
-router.get('/',/* isVerified, */ async(req, res) => {
-  const promise = User.findById(req.body._id);
-
-  promise.then((data) => {
+router.get('/', async(req, res) => {
+  await User.findById(req.body._id).then((data) => {
     res.json(data);
   }).catch((err) => { 
     res.json(err);
@@ -33,12 +29,7 @@ router.get('/',/* isVerified, */ async(req, res) => {
 router.post('/signin', async(req, res) => {
   const email = req.body.email;
   const password = req.body.password;
-  await User.findOne({email})/* .orFail(() => {
-    res.json({
-      status: false,
-      message: 'Authentication failed. Wrong Email'
-    });
-  }) */.then((data) => {
+  await User.findOne({email}).then((data) => {
     if(data && (bcrypt.compareSync(password,data.password))) {
       const payload = {
         email
@@ -78,9 +69,7 @@ router.post('/signup', async(req, res) => {
 
 //put
 router.put('/update',/* isVerified, */ async(req, res) => {
-  const promise = User.findByIdAndUpdate(req.body._id,req.body,{new: true});
-
-  promise.then((data)=>{
+  await User.findByIdAndUpdate(req.body._id,req.body,{new: true}).then((data)=>{
     res.json(data);
   }).catch((err) => {
     res.json(err);
@@ -89,9 +78,7 @@ router.put('/update',/* isVerified, */ async(req, res) => {
 
 //delete
 router.delete('/delete',/* isVerified, */ async(req, res) => {
-  const promise = User.findByIdAndRemove(req.body._id);
-
-  promise.then(()=>{
+  await User.findByIdAndRemove(req.body._id).then(()=>{
     res.json(true);
   }).catch((err) => {
     res.json(err);
