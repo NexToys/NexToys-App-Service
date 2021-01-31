@@ -10,19 +10,13 @@ const toyRouter = require('./routes/toy');
 
 const app = express();
 
-//db
-const db = require('./helper/db')();
-
 //config
 const config = require('./config');
 app.set('api_secret_key',config.api_secret_key);
 
 //helper
 const verifyToken= require('./helper/verify-token');
-<<<<<<< Updated upstream
-=======
 const db = require('./helper/db')();
->>>>>>> Stashed changes
 
 //
 app.use(express.json());
