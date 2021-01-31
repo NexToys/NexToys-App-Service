@@ -1,5 +1,4 @@
 const mongoose = require('mongoose');
-const joi = require('@hapi/joi');
 const Schema = mongoose.Schema;
 
 const toySchema = new Schema({
